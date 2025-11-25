@@ -123,7 +123,7 @@ if __name__ == "__main__":
         fn=extract_features,
         inputs=[
             gr.Dropdown(model_choices, label="选择模型"),
-            gr.Image(type="pil", label="上传图片 (可选)"),
+            gr.Image(type="pil", label="上传图片 (可选)", format='png'),
             gr.Textbox(label="输入文本 (可选)")
         ],
         outputs=gr.Textbox(label="特征向量（Base64 编码）")
