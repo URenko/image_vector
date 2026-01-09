@@ -17,7 +17,13 @@ except ModuleNotFoundError:
     pass
 
 # 设备
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+if torch.cuda.is_available():
+    device = torch.device('cuda')
+elif getattr(torch.backends, "mps", None) and torch.backends.mps.is_available():
+    device = torch.device('mps')
+else:
+    device = torch.device('cpu')
+print('使用设备', device)
 
 # ==== 初始化 CLIP 模型 ====
 timm_model_name = 'vit_large_patch14_clip_224.openai'
