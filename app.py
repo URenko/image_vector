@@ -1,3 +1,4 @@
+import os
 import torch
 import torch.nn.functional as F
 import timm
@@ -5,8 +6,6 @@ from PIL import Image
 from transformers import AutoProcessor, ChineseCLIPModel, CLIPProcessor, CLIPModel
 import base64
 import numpy as np
-import cv2
-from python_orb_slam3 import ORBExtractor
 try:
     import pillow_jxl
 except ModuleNotFoundError:
@@ -36,13 +35,17 @@ cn_clip_processor = AutoProcessor.from_pretrained("OFA-Sys/chinese-clip-vit-huge
 dclip_model = CLIPModel.from_pretrained("OysterQAQ/DanbooruCLIP", use_safetensors=False).to(device)
 dclip_processor = CLIPProcessor.from_pretrained("OysterQAQ/DanbooruCLIP", use_safetensors=False)
 
-# ==== 初始化 ORB-SLAM3 ====
-orb_extractor = ORBExtractor(
-    n_features=500,
-    scale_factor=1.2,
-    n_levels=8,
-    interpolation=cv2.INTER_AREA,
-)
+if (use_search_methods := os.getenv('use_search_methods')) is None or 'ORB' in use_search_methods:
+    import cv2
+    from python_orb_slam3 import ORBExtractor
+
+    # ==== 初始化 ORB-SLAM3 ====
+    orb_extractor = ORBExtractor(
+        n_features=500,
+        scale_factor=1.2,
+        n_levels=8,
+        interpolation=cv2.INTER_AREA,
+    )
 
 # ==== 特征向量函数 ====
 @torch.inference_mode()

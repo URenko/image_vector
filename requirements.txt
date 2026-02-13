@@ -3,5 +3,5 @@ timm
 transformers<4.56
 gradio
 pillow
-python_orb_slam3
+# python_orb_slam3
 pillow-jxl-plugin
